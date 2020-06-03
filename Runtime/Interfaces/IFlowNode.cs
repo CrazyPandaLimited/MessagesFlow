@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace UnityCore.MessagesFlow
 {
@@ -6,7 +6,7 @@ namespace UnityCore.MessagesFlow
     {
         #region Properties
         FlowNodeStatus Status { get; }
-        AggregateException Exception { get; }
+        Exception Exception { get; }
         #endregion
 
         #region Events

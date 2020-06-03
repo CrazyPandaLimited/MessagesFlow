@@ -1,17 +1,22 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace UnityCore.MessagesFlow
 {
     public class MessageHeader
     {
+        private List<Exception> _exceptions = null;
+
         #region Properties
         public string Id { get; protected set; }
         public MetaData MetaData { get; protected set; }
 
         public CancellationToken CancellationToken { get; protected set; }
 
-        public AggregateException Exceptions { get; protected set; }
+        public AggregateException Exceptions => _exceptions == null ? null : new AggregateException( _exceptions );
+
+        public IReadOnlyList<Exception> ExceptionsList => _exceptions;
         #endregion
 
         #region Constructors
@@ -26,13 +31,19 @@ namespace UnityCore.MessagesFlow
         #region Public Members
         public void AddException( Exception exception )
         {
-            Exceptions = Exceptions == null ? new AggregateException( exception ) : new AggregateException( exception, Exceptions );
+            if( _exceptions == null )
+            {
+                _exceptions = new List< Exception >( 1 ) { exception };
+            }
+            else
+            {
+                _exceptions.Add( exception );
+            }
         }
-
 
         public override string ToString()
         {
-            return $"Id:{Id} IsCanceled:{CancellationToken.IsCancellationRequested} Metadata:{MetaData} Exceptions:{Exceptions?.Flatten().ToString()}";
+            return $"Id:{Id} IsCanceled:{CancellationToken.IsCancellationRequested} Metadata:{MetaData} Exceptions:{Exceptions?.ToString()}";
         }
         #endregion
     }
