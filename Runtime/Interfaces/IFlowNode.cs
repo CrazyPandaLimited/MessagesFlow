@@ -1,20 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace UnityCore.MessagesFlow
+namespace CrazyPanda.UnityCore.MessagesFlow
 {
     public interface IFlowNode
     {
-        #region Properties
         FlowNodeStatus Status { get; }
         Exception Exception { get; }
-        #endregion
 
-        #region Events
+        IReadOnlyCollection< IInputNode > Inputs { get; }
+        IReadOnlyCollection< IOutputNode > Outputs { get; }
+
         event EventHandler< FlowNodeStatusChangedEventArgs > OnStatusChanged;
-        #endregion
 
-        #region Public Members
         void Restore();
-        #endregion
     }
 }

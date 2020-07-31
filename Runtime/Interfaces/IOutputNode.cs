@@ -1,17 +1,17 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using CrazyPanda.UnityCore.AssetsSystem;
 
-namespace UnityCore.MessagesFlow
+namespace CrazyPanda.UnityCore.MessagesFlow
 {
-    public interface IOutputNode< out TBodyType > : IDisposable where TBodyType : IMessageBody
+    public interface IOutputNode
     {
-        #region Events
-        event EventHandler< MessageSendedOutEventArgs > OnMessageSended;
-        #endregion
+        event EventHandler< MessageSentOutEventArgs > MessageSent;
+    }
 
-        #region Public Members
-        IEnumerable< IBaseOutputConnection > GetOutputs();
-        #endregion
+    public interface IOutputNode< out TBodyType > : IOutputNode
+        where TBodyType : IMessageBody
+    {
+        void LinkTo( IInputNode< TBodyType> input );
     }
 }

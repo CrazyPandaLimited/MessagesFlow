@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityCore.MessagesFlow
+namespace CrazyPanda.UnityCore.MessagesFlow
 {
     public class MetaData
     {

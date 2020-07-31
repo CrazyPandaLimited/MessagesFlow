@@ -1,4 +1,4 @@
-namespace UnityCore.MessagesFlow
+namespace CrazyPanda.UnityCore.MessagesFlow
 {
     public enum FlowMessageStatus
     {

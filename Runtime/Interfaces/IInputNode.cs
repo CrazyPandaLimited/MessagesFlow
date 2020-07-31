@@ -1,16 +1,15 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 
-namespace UnityCore.MessagesFlow
+namespace CrazyPanda.UnityCore.MessagesFlow
 {
-    public interface IInputNode< in TBodyType > : IInputNode
+    public interface IInputNode
     {
-        #region Public Members
-        FlowMessageStatus ProcessMessage( MessageHeader header, TBodyType body );
-        #endregion
+        event EventHandler< MessageReceivedEventArgs > MessageReceived;
     }
 
-    public interface IInputNode : IFlowNode, IDisposable
+    public interface IInputNode< in TBodyType > : IInputNode
     {
-        event EventHandler< MessageConsumedEventArgs > OnMessageConsumed;
+        void ProcessMessage( MessageHeader header, TBodyType body );
     }
 }

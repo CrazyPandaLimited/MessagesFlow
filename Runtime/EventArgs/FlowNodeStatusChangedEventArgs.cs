@@ -1,32 +1,26 @@
-using System;
+﻿using System;
 using CrazyPanda.UnityCore.AssetsSystem;
 
-namespace UnityCore.MessagesFlow
+namespace CrazyPanda.UnityCore.MessagesFlow
 {
-    public class FlowNodeStatusChangedEventArgs : EventArgs
+    public struct FlowNodeStatusChangedEventArgs
     {
-        #region Public Fields
-        public IFlowNode Node;
-        public FlowNodeStatus NewStatus;
-        public MessageHeader Header;
-        public IMessageBody Body;
-        #endregion
+        public IFlowNode Node { get; }
+        public FlowNodeStatus NewStatus { get; }
+        public MessageHeader Header { get; }
+        public IMessageBody Body { get; }
 
-        #region Constructors
         public FlowNodeStatusChangedEventArgs( IFlowNode node, FlowNodeStatus newStatus )
+            : this( node, newStatus, null, null )
         {
-            Node = node;
-            NewStatus = newStatus;
-            Header = null;
         }
 
-        public FlowNodeStatusChangedEventArgs( IFlowNode node, MessageHeader header, IMessageBody body, FlowNodeStatus newStatus )
+        public FlowNodeStatusChangedEventArgs( IFlowNode node, FlowNodeStatus newStatus, MessageHeader header, IMessageBody body )
         {
-            Node = node;
+            Node = node ?? throw new ArgumentNullException( nameof( node ) );
             NewStatus = newStatus;
             Header = header;
             Body = body;
         }
-        #endregion
     }
 }

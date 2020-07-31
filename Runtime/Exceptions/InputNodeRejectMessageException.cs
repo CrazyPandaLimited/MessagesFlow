@@ -1,6 +1,6 @@
 using System;
 
-namespace UnityCore.MessagesFlow
+namespace CrazyPanda.UnityCore.MessagesFlow
 {
     public class InputNodeRejectMessageException : Exception
     {
