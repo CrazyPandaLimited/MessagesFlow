@@ -4,7 +4,6 @@ namespace CrazyPanda.UnityCore.MessagesFlow
 {
     public class InputNodeRejectMessageException : Exception
     {
-        #region Constructors
         public InputNodeRejectMessageException( string message ) : base( message )
         {
         }
@@ -12,6 +11,5 @@ namespace CrazyPanda.UnityCore.MessagesFlow
         public InputNodeRejectMessageException( string message, Exception innerException ) : base( message, innerException )
         {
         }
-        #endregion
     }
 }

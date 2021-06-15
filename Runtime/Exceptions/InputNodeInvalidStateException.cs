@@ -4,7 +4,6 @@ namespace CrazyPanda.UnityCore.MessagesFlow
 {
     public class InputNodeInvalidStateException : Exception
     {
-        #region Constructors
         public InputNodeInvalidStateException( string message ) : base( message )
         {
         }
@@ -12,6 +11,5 @@ namespace CrazyPanda.UnityCore.MessagesFlow
         public InputNodeInvalidStateException( string message, Exception innerException ) : base( message, innerException )
         {
         }
-        #endregion
     }
 }

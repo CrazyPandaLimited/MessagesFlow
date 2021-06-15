@@ -5,12 +5,9 @@ namespace CrazyPanda.UnityCore.MessagesFlow
 {
     public class MetaData
     {
-        #region Private Fields
         private Dictionary< string, KeyValuePair< Type, object > > _metadata = new Dictionary< string, KeyValuePair< Type, object > >();
         private HashSet< string > _flags = new HashSet< string >();
-        #endregion
 
-        #region Constructors
         public MetaData()
         {
         }
@@ -22,9 +19,7 @@ namespace CrazyPanda.UnityCore.MessagesFlow
                 SetFlag( flag );
             }
         }
-        #endregion
 
-        #region Public Members
         public MetaData Copy()
         {
             var newMetaData = new MetaData();
@@ -116,6 +111,5 @@ namespace CrazyPanda.UnityCore.MessagesFlow
             result += "/MetaDataEnd/";
             return result;
         }
-        #endregion
     }
 }
