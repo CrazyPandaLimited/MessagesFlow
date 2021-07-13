@@ -1,22 +1,23 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace CrazyPanda.UnityCore.MessagesFlow
 {
     public class MetaData
     {
-        private Dictionary< string, KeyValuePair< Type, object > > _metadata = new Dictionary< string, KeyValuePair< Type, object > >();
-        private HashSet< string > _flags = new HashSet< string >();
-
-        public MetaData()
-        {
-        }
+        private Dictionary<string, KeyValuePair<Type, object>> _metadata;
+        private HashSet<string> _flags;
 
         public MetaData( params string[ ] flags )
         {
-            foreach( var flag in flags )
+            _metadata = null;
+            _flags = null;
+
+            if( flags != null && flags.Length > 0 )
             {
-                SetFlag( flag );
+                _flags = new HashSet<string>();
+                _flags.UnionWith( flags );
             }
         }
 
@@ -24,14 +25,19 @@ namespace CrazyPanda.UnityCore.MessagesFlow
         {
             var newMetaData = new MetaData();
 
-            foreach( var keyValuePair in _metadata )
+            if( _metadata != null )
             {
-                newMetaData._metadata.Add( keyValuePair.Key, keyValuePair.Value );
+                newMetaData._metadata = new Dictionary<string, KeyValuePair<Type, object>>();
+                foreach( var keyValuePair in _metadata )
+                {
+                    newMetaData._metadata.Add( keyValuePair.Key, keyValuePair.Value );
+                }
             }
 
-            foreach( var flag in _flags )
+            if( _flags != null )
             {
-                newMetaData._flags.Add( flag );
+                newMetaData._flags = new HashSet<string>();
+                newMetaData._flags.UnionWith( _flags );
             }
 
             return newMetaData;
@@ -44,72 +50,82 @@ namespace CrazyPanda.UnityCore.MessagesFlow
                 throw new ArgumentNullException( nameof(key) );
             }
 
-            return _metadata.ContainsKey( key );
+            return _metadata != null ? _metadata.ContainsKey( key ) : false;
         }
 
 
         public T GetMeta< T >( string key )
         {
-            if( !_metadata.ContainsKey( key ) )
+            if( _metadata == null )
             {
                 throw new KeyNotFoundException( key );
-            }
-
-            if (!(_metadata[key].Value is T))
-            {
-                throw new InvalidCastException( key );
             }
 
             return ( T ) _metadata[ key ].Value;
         }
 
 
-        public void SetMeta< T >( string key, T data, bool overrideData = false )
+        public void SetMeta<T>( string key, T data, bool overrideData = false )
         {
-            if( _metadata.ContainsKey( key ) )
+            if( _metadata == null )
             {
-                if( overrideData )
-                {
-                    _metadata[ key ] = new KeyValuePair< Type, object >( typeof( T ), data );
-                    return;
-                }
-
-                throw new MetaDataKeyAlreadyExistException( $"For key:{key}" );
+                _metadata = new Dictionary<string, KeyValuePair<Type, object>>();
             }
 
-            _metadata.Add( key, new KeyValuePair< Type, object >( typeof( T ), data ) );
+            if( overrideData )
+            {
+                _metadata[ key ] = new KeyValuePair<Type, object>( typeof( T ), data );
+            }
+            else
+            {
+                _metadata.Add( key, new KeyValuePair<Type, object>( typeof( T ), data ) );
+            }
         }
 
         public bool HasFlag( string flag )
         {
-            return _flags.Contains( flag );
+            return _flags != null && _flags.Contains( flag );
         }
 
         public void SetFlag( string flag )
         {
+            if ( _flags == null)
+            {
+                _flags = new HashSet<string>();
+            }
+
             _flags.Add( flag );
         }
 
         public void RemoveFlag( string flag )
         {
-            _flags.Remove( flag );
+            if( _flags != null )
+            {
+                _flags.Remove( flag );
+            }
         }
 
         public override string ToString()
         {
-            string result = "MetaData:";
-            foreach( var o in _metadata )
+            StringBuilder sb = new StringBuilder( "MetaData:" );
+            if( _metadata != null )
             {
-                result += $"key:{o.Key} value:{o.Value.ToString()} ";
+                foreach( var o in _metadata )
+                {
+                    sb.Append( $"key:{o.Key} value:{o.Value} ");
+                }
             }
 
-            foreach( var o in _flags )
+            if( _flags != null )
             {
-                result += $" flag:{o}";
+                foreach( var o in _flags )
+                {
+                    sb.Append( $" flag:{o}" );
+                }
             }
 
-            result += "/MetaDataEnd/";
-            return result;
+            sb.Append( "/MetaDataEnd/");
+            return sb.ToString();
         }
     }
 }
